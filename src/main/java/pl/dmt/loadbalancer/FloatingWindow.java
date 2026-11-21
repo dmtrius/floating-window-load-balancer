@@ -18,7 +18,7 @@ import java.util.function.LongSupplier;
  * is the normal trade-off for a fixed-bucket implementation.
  *
  * <p>This class is thread-safe. Recording and snapshotting are synchronized; bucket arrays
- * are short (typically 10-20 entries), so contention is minimal.
+ * are short (typically 10–20 entries), so contention is minimal.
  */
 public final class FloatingWindow {
 
@@ -32,7 +32,7 @@ public final class FloatingWindow {
     /**
      * Creates a window backed by {@link System#nanoTime()}.
      *
-     * @param window      total time span to retain; must be positive
+     * @param window      total timespan to retain; must be positive
      * @param bucketCount number of time buckets; must be at least one and no more than
      *                    {@code window.toNanos()}
      */
@@ -142,6 +142,7 @@ public final class FloatingWindow {
         return Duration.ofNanos(windowNanos);
     }
 
+    @SuppressWarnings("unused")
     public int bucketCount() {
         return bucketCount;
     }

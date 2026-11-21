@@ -51,6 +51,7 @@ public final class LoadBalancer {
     }
 
     /** Immutable view of all configured backends, including unavailable ones. */
+    @SuppressWarnings("unused")
     public List<Backend> backends() {
         return backends;
     }
@@ -81,7 +82,7 @@ public final class LoadBalancer {
      * backend's floating window. The in-flight count is incremented before the call and
      * decremented in a {@code finally} block.
      *
-     * <p>Runtime exceptions and errors are recorded as failures and rethrown unchanged.
+     * <p>Runtime exceptions and errors are recorded as failures and re-thrown unchanged.
      * There is no retry: a failed request is visible to the caller.
      */
     public <T> T execute(Function<? super Backend, ? extends T> request) {

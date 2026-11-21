@@ -1,5 +1,6 @@
 package pl.dmt.loadbalancer;
 
+import java.io.Serial;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public final class Demo {
     private static final int BUCKETS = 6;
     private static final int REQUESTS = 150;
 
-    public static void main(String[] args) throws InterruptedException {
+    void main() throws InterruptedException {
         Backend fast = new Backend("api-fast", WINDOW, BUCKETS);
         Backend medium = new Backend("api-medium", WINDOW, BUCKETS);
         Backend slow = new Backend("api-slow", WINDOW, BUCKETS);
@@ -113,6 +114,7 @@ public final class Demo {
     }
 
     private static final class SimulatedFailure extends RuntimeException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         private SimulatedFailure(String message) {

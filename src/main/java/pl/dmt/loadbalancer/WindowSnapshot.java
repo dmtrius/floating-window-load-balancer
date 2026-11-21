@@ -12,11 +12,13 @@ import java.time.Duration;
  */
 public record WindowSnapshot(long windowNanos, long requests, long failures, long latencyNanos) {
 
+    private static final double RPS_COUNT = 1_000_000_000.0;
+
     public WindowSnapshot {
         if (windowNanos <= 0) {
             throw new IllegalArgumentException("windowNanos must be > 0");
         }
-        if (requests < 0 || failures < 0 || failures > requests || latencyNanos < 0) {
+        if (failures < 0 || failures > requests || latencyNanos < 0) {
             throw new IllegalArgumentException("invalid window counters");
         }
     }
@@ -32,13 +34,14 @@ public record WindowSnapshot(long windowNanos, long requests, long failures, lon
     }
 
     /** Mean latency as a {@link Duration}; zero when no requests were observed. */
+    @SuppressWarnings("unused")
     public Duration averageLatency() {
         return Duration.ofNanos((long) averageLatencyNanos());
     }
 
     /** Throughput represented by this window, in requests per second. */
     public double requestsPerSecond() {
-        return requests * 1_000_000_000.0 / windowNanos;
+        return requests * RPS_COUNT / windowNanos;
     }
 
     /** Configured window length. */
