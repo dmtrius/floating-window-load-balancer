@@ -1,4 +1,4 @@
-package com.example.loadbalancer;
+package pl.dmt.loadbalancer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -16,6 +16,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
+import pl.dmt.loadbalancer.Backend;
+import pl.dmt.loadbalancer.LoadBalancer;
+import pl.dmt.loadbalancer.NoAvailableBackendException;
+import pl.dmt.loadbalancer.RoundRobinStrategy;
 
 class LoadBalancerTest {
 

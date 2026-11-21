@@ -1,4 +1,4 @@
-package com.example.loadbalancer;
+package pl.dmt.loadbalancer;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import pl.dmt.loadbalancer.Backend;
+import pl.dmt.loadbalancer.FloatingWindowStrategy;
 
 class FloatingWindowStrategyTest {
 

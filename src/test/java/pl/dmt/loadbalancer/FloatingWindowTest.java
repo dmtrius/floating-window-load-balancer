@@ -1,4 +1,4 @@
-package com.example.loadbalancer;
+package pl.dmt.loadbalancer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.Test;
+import pl.dmt.loadbalancer.FloatingWindow;
+import pl.dmt.loadbalancer.WindowSnapshot;
 
 class FloatingWindowTest {
 

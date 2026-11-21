@@ -1,4 +1,4 @@
-package com.example.loadbalancer;
+package pl.dmt.loadbalancer;
 
 /**
  * Thrown when every backend is marked unavailable.

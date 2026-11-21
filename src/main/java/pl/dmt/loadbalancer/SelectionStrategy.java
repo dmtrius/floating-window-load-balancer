@@ -1,4 +1,4 @@
-package com.example.loadbalancer;
+package pl.dmt.loadbalancer;
 
 import java.util.List;
 
