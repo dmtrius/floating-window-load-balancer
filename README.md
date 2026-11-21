@@ -1,4 +1,4 @@
-# Floating-Window Load Balancer (Java 17)
+# Floating-Window Load Balancer (Java 26)
 
 A small, dependency-free, thread-safe load balancer that chooses backends using a
 **floating (sliding) time window** of recent latency and failure observations.
