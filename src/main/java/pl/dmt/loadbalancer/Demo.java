@@ -36,45 +36,49 @@ public final class Demo {
             routed.put(backend.id(), new AtomicInteger());
         }
 
-        ExecutorService workers = Executors.newFixedThreadPool(8);
-        CountDownLatch finished = new CountDownLatch(REQUESTS);
-        for (int i = 0; i < REQUESTS; i++) {
-            workers.submit(() -> {
-                try {
-                    loadBalancer.execute(backend -> {
-                        routed.get(backend.id()).incrementAndGet();
-                        simulate(backend.id());
-                        return null;
-                    });
-                } catch (SimulatedFailure expectedFailure) {
-                    // The backend window records the failure; the demo only counts routing.
-                } finally {
-                    finished.countDown();
-                }
-            });
+        try (ExecutorService workers = Executors.newFixedThreadPool(8)) {
+            CountDownLatch finished = new CountDownLatch(REQUESTS);
+            for (int i = 0; i < REQUESTS; ++i) {
+                workers.submit(() -> {
+                    try {
+                        loadBalancer.execute(backend -> {
+                            routed.get(backend.id()).incrementAndGet();
+                            simulate(backend.id());
+                            return null;
+                        });
+                    } catch (SimulatedFailure expectedFailure) {
+                        // The backend window records the failure; the demo only counts routing.
+                    } finally {
+                        finished.countDown();
+                    }
+                });
+            }
+
+            if (!finished.await(20, TimeUnit.SECONDS)) {
+                IO.println("Timed out waiting for the simulated requests.");
+            }
+            workers.shutdown();
+            boolean terminated = workers.awaitTermination(5, TimeUnit.SECONDS);
+            if (!terminated) {
+                IO.println("Timed out waiting for the worker threads to terminate.");
+            }
         }
 
-        if (!finished.await(20, TimeUnit.SECONDS)) {
-            System.out.println("Timed out waiting for the simulated requests.");
-        }
-        workers.shutdown();
-        workers.awaitTermination(5, TimeUnit.SECONDS);
-
-        System.out.println("Routing counts for " + REQUESTS + " requests:");
+        IO.println("Routing counts for " + REQUESTS + " requests:");
         for (Backend backend : backends) {
             System.out.printf("  %-10s %d%n", backend.id(), routed.get(backend.id()).get());
         }
 
-        System.out.println();
-        System.out.println("Floating-window statistics:");
+        IO.println();
+        IO.println("Floating-window statistics:");
         printStats(backends);
 
-        System.out.println();
+        IO.println();
         System.out.printf("Waiting %.1fs for the %.0fs window to slide...%n",
                 WINDOW.toMillis() / 1000.0 + 0.2, WINDOW.toMillis() / 1000.0);
         Thread.sleep(WINDOW.toMillis() + 200);
 
-        System.out.println("Statistics after the window has slid past every sample:");
+        IO.println("Statistics after the window has slid past every sample:");
         printStats(backends);
     }
 
